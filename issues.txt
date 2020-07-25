@@ -1,0 +1,1 @@
+- Problemen met event-bubbling (up) wanneer er ES6 arrow functions gebruikt worden
