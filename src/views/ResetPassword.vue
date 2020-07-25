@@ -1,7 +1,18 @@
 <template>
-    <section class="view view--login">
-        <h1>Reset Password</h1>
-        <ResetPasswordForm @success="success" />
+    <section class="view view-center">
+        <div class="card card-small">
+            <div class="card--main">
+                <h2>Reset password</h2>
+                <ResetPasswordForm @success="success" />
+            </div>
+            <div class="card--alt">
+                <h2>Lost your password?</h2>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dapibus est vitae tellus semper, vitae laoreet lacus bibendum. Suspendisse mollis pellentesque mi eget interdum. Mauris tempus nibh et tellus posuere, viverra lacinia nunc molestie.
+                </p>
+                <router-link to="/login" class="btn btn-primary">No, nevermind!</router-link>
+            </div>
+        </div>
     </section>
 </template>
 

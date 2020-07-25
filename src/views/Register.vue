@@ -1,11 +1,26 @@
 <template>
-    <section class="view view--register">
-        <h1>Register</h1>
-        <p v-if="done">
-            Registration complete! 
-            <router-link to="/login">Back to login</router-link>
-        </p>
-        <RegisterForm @success="success" v-else />
+    <section class="view view-center">
+        <div class="card card-small">
+            <div class="card--main">
+                <h2>Register</h2>
+                <RegisterForm @success="success" />
+            </div>
+            <div class="card--alt">
+
+                <h2 v-if="!done">Already have an account?</h2>
+                <p v-if="!done">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dapibus est vitae tellus semper, vitae laoreet lacus bibendum. Suspendisse mollis pellentesque mi eget interdum. Mauris tempus nibh et tellus posuere, viverra lacinia nunc molestie.
+                </p>
+
+                <h2 v-if="done">Registration complete</h2>
+                <p v-if="done">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dapibus est vitae tellus semper, vitae laoreet lacus bibendum. Suspendisse mollis pellentesque mi eget interdum. Mauris tempus nibh et tellus posuere, viverra lacinia nunc molestie.
+                </p>
+
+                <router-link to="/login">Back to login</router-link>
+            </div>
+        </div>
+        
     </section>
 </template>
 

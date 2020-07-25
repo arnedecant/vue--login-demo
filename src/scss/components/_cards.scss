@@ -1,0 +1,49 @@
+.card {
+    position: relative;
+    display: flex;
+}
+
+.card-small {
+    max-width: 60rem;
+    margin: 0 auto;
+}
+
+.card--main, .card--alt {
+    padding: 2rem;
+}
+
+.card--main {
+    order: 1;
+    background-color: var(--color-default);
+    border-radius: var(--border-radius);
+    width: 40%;
+    box-shadow: 0 1rem 2rem rgba(0,0,0,0.19), 0 0.5rem 0.5rem rgba(0,0,0,0.23);
+    z-index: 1; // ensure box-shadow gets on top of .card--alt:after
+}
+
+.card--alt {
+    --margin: 2rem;
+    order: 0;
+    width: 55%;
+    margin: var(--margin) 0;
+    color: var(--color-default);
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+    padding-right: 6rem;
+
+    &, &:after {  
+        background-color: rgba(var(--rgb-alt), 0.9);
+        margin: var(--margin) 0;
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 5%;
+        height: calc(100% - 2 * var(--margin));
+        border-top-right-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+    }
+}

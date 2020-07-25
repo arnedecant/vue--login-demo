@@ -1,31 +1,28 @@
 <template>
     <section class="form form--registration">
-        <p v-if="errors.length">
-            <b>Please correct the following error(s):</b>
-            <ul>
-                <li v-for="error in errors" :key="error">{{ error }}</li>
-            </ul>
-        </p>
-        <form @submit.prevent="submit">
+        <ul v-if="errors.length">
+            <li v-for="error in errors" :key="error">{{ error }}</li>
+        </ul>
+        <form @submit.prevent="submit" novalidate>
             <div class="field">
+                <input type="text" v-model="firstname" id="firstname" name="firstname" :class="getClass('firstname')">
                 <label for="firstname">First name</label>
-                <input type="text" v-model="firstname" id="firstname" name="firstname" placeholder="First name">
             </div>
             <div class="field">
+                <input type="text" v-model="lastname" id="lastname" name="lastname" :class="getClass('lastname')">
                 <label for="lastname">Last name</label>
-                <input type="text" v-model="lastname" id="lastname" name="lastname" placeholder="Last name">
             </div>
             <div class="field">
+                <input type="email" v-model="email" id="email" name="email" :class="getClass('email')">
                 <label for="email">Email</label>
-                <input type="email" v-model="email" id="email" name="email" placeholder="Email">
             </div>
             <div class="field">
+                <input type="password" v-model="password" id="password" name="password" :class="getClass('password')">
                 <label for="password">Password</label>
-                <input type="password" v-model="password" id="password" name="password" placeholder="Password">
             </div>
             <div class="field">
+                <input type="password" v-model="confirmPassword" id="confirmPassword" name="confirmPassword" :class="getClass('confirmPassword')">
                 <label for="confirmPassword">Confirm password</label>
-                <input type="password" v-model="confirmPassword" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password">
             </div>
             <button type="submit">Register</button>
         </form>
@@ -48,9 +45,18 @@
             }
         },
         methods: {
-            submit() {
+            submit(e) {
+
+                // Reset
+
+                this.errors = []
                 
-                // const { firstname, lastname, email, password, confirmPassword } = this
+                const { firstname, lastname, email, password, confirmPassword } = this
+                // const fields = ['firstname', 'lastname', 'email', 'password', 'confirmPassword']
+
+                // Setup lookup table to match error messages with fields,
+                // loop said lookup table and push error messages if field is empty.
+                // Finally, skip all remaining code if there are errors.
 
                 const requiredMessages = {
                     firstname: 'Please enter your first name.',
@@ -60,17 +66,53 @@
                     confirmPassword: 'Please confirm the given password.',
                 }
 
-                for (let key in requiredMessages) {
-                    if (!this[key]) this.errors.push(requiredMessages[key])
-                }
+                Object.keys(requiredMessages).forEach((key) => !this[key] && this.errors.push(requiredMessages[key]))
 
                 if (this.errors.length > 0) return
 
-                // if (password !== confirmPassword) return
+                // Make sure passwords match, make sure email hasn't been used yet
+                // and check email address with a regex. Finally, skip remaining
+                // code if errors are present.
 
-                // window.USERS.push({ firstname, lastname, email, password })
+                if (password !== confirmPassword) this.errors.push('Please make sure your passwords match.')
+
+                let exists = window.USERS.find((user) => user.email == email)
+                if (exists) this.errors.push('That email address has already been taken.')
+
+                let isValidEmail = this.validate('email', email)
+                if (!isValidEmail) this.errors.push('Please enter a valid email address.')
+
+                if (this.errors.length > 0) return
+
+                // Add user and emit to parent
+
+                window.USERS.push({ firstname, lastname, email, password })
 
                 this.$emit('success', e)
+            },
+
+            validate(type, value) {
+
+                // Lookup table with different regexes
+
+                const regex = {
+                    email: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                }
+
+                // Match from lookup table, test regex and return
+
+                return regex[type].test(value)
+
+            },
+
+            getClass(prop) {
+
+                let classlist = []
+
+                if (!this[prop]) classlist.push('empty')
+
+                return classlist.join(' ')
+
             }
         } 
     }

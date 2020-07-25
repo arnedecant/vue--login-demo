@@ -1,11 +1,12 @@
 <template>
     <form @submit.prevent="submit">
-        <label for="email">Email</label>
-        <input type="email" v-model="email" id="email" name="email" placeholder="Email">
+        <div class="field">
+            <input type="email" v-model="email" id="email" name="email" placeholder="Email">
+            <label for="email">Email</label>
+        </div>
         <button type="submit">Submit</button>
     </form>
 </template>
-
 <script>
 
     export default { 

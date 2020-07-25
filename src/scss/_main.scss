@@ -1,0 +1,35 @@
+@import '_variables';
+
+:root {
+    font-family: var(--font-primary);
+    font-weight: 300;
+    font-size: 1rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--color-alt);
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+    position: relative;
+    background-image: url('./assets/background.jpg');
+    background-size: cover;
+    background-position: center center;
+    height: 100vh;
+    overflow: auto;
+}
+
+@import 'helpers/reset';
+
+@import 'base/typography';
+@import 'base/animations';
+@import 'base/views';
+
+@import 'components/buttons';
+@import 'components/forms';
+@import 'components/cards';
