@@ -1,10 +1,10 @@
 input, textarea {
     all: unset;
-    border-bottom: 3px solid var(--color-primary);
 }
 
 .field {
     --height: 2rem;
+    --border-width: 3px;
 
     position: relative;
     margin-top: 1rem;
@@ -23,9 +23,36 @@ input, textarea {
 .field input {
     font-size: 1.1rem;
     font-weight: 500;
+    // border-bottom: var(--border-width) solid var(--color-primary);
 }
 
-.field label {
+.field:after, .field:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: var(--border-width);
+    background-color: var(--color-primary);
+
+    transform-origin: center left;
+    transition: transform .3s;
+}
+
+.field:after {
+    transform: scaleX(0);
+    background-color: var(--color-error);
+}
+
+.field.invalid:after {
+    transform: scaleX(1);
+    z-index: 2;
+}
+
+.field:not(.empty).valid:after {
+    background-color: var(--color-error);
+}
+
+.field-text label {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -36,7 +63,9 @@ input, textarea {
     pointer-events: none; // usually bad UX, but because labels are on top of input fields this is a must
 }
 
-.field input:focus + label, .field input:not(.empty) + label {
+.field-text input:focus + label, 
+.field-text:not(.empty) input + label,
+.field-text input:-webkit-autofill + label {
     transform: translateY(-70%) scale(0.7);
     opacity: 1;
     pointer-events: all;
@@ -44,4 +73,47 @@ input, textarea {
 
 .field + button {
     margin-top: var(--margin-default);
+}
+
+form .btn-primary:last-child {
+    margin-top: var(--margin-xl);
+}
+
+// Exceptions
+
+.field-checkbox {
+    --height: auto;
+    display: flex;
+    margin-top: 1rem;
+
+    &:after, &:before {
+        display: none;
+    }
+
+    label {
+        position: static;
+        font-size: 0.8rem;
+        margin-top: -1px;
+    }
+
+    input[type="checkbox"] {
+        width: 0.8rem;
+        height: 0.8rem;
+        margin-right: 0.5rem;
+        border: 2px solid var(--color-primary);
+        transition: background .3s, border .3s;
+
+        &:checked {
+            border-color: var(--color-primary--light);
+            background-color: var(--color-primary);
+        }
+    }
+
+    &.invalid input[type="checkbox"] {
+        border-color: var(--color-error);
+
+        &:checked {
+            border-color: var(--color-primary--light);
+        }
+    }
 }

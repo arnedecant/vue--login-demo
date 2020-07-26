@@ -1,0 +1,23 @@
+.alerts {
+    margin: 0;
+    padding: 0;
+}
+
+.alert {
+    display: block;
+    border-left: 2px solid var(--color-primary);
+    padding: 0.7rem 1rem;
+    margin: 0.2rem 0;
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+
+    &, li {
+        list-style-type: none;
+    }
+}
+
+.alert-error {
+    border-color: var(--color-error);
+    background-color: var(--color-error--light);
+    // color: var(--color-error);
+}

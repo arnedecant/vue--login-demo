@@ -1,30 +1,40 @@
+// -------------------------------------------------------------------
+// :: RegisterForm
+// -------------------------------------------------------------------
+// Emits:
+//  - success: user
+
 <template>
-    <section class="form form--registration">
-        <ul v-if="errors.length">
-            <li v-for="error in errors" :key="error">{{ error }}</li>
+    <section class="form">
+        <ul v-if="alerts.length" class="alerts">
+            <li v-for="alert in alerts" :key="alert.message" class="alert" :class="'alert-' + alert.type">{{ alert.message }}</li>
         </ul>
-        <form @submit.prevent="submit" novalidate>
-            <div class="field">
-                <input type="text" v-model="firstname" id="firstname" name="firstname" :class="getClass('firstname')">
+        <form @submit.prevent="submit" novalidate autocomplete="off">
+            <div class="field field-text" :class="getClass('firstname')">
+                <input type="text" v-model="firstname.value" id="firstname" name="firstname">
                 <label for="firstname">First name</label>
             </div>
-            <div class="field">
-                <input type="text" v-model="lastname" id="lastname" name="lastname" :class="getClass('lastname')">
+            <div class="field field-text" :class="getClass('lastname')">
+                <input type="text" v-model="lastname.value" id="lastname" name="lastname">
                 <label for="lastname">Last name</label>
             </div>
-            <div class="field">
-                <input type="email" v-model="email" id="email" name="email" :class="getClass('email')">
+            <div class="field field-text" :class="getClass('email')">
+                <input type="email" v-model="email.value" id="email" name="email">
                 <label for="email">Email</label>
             </div>
-            <div class="field">
-                <input type="password" v-model="password" id="password" name="password" :class="getClass('password')">
+            <div class="field field-text" :class="getClass('password')">
+                <input type="password" v-model="password.value" id="password" name="password">
                 <label for="password">Password</label>
             </div>
-            <div class="field">
-                <input type="password" v-model="confirmPassword" id="confirmPassword" name="confirmPassword" :class="getClass('confirmPassword')">
+            <div class="field field-text" :class="getClass('confirmPassword')">
+                <input type="password" v-model="confirmPassword.value" id="confirmPassword" name="confirmPassword">
                 <label for="confirmPassword">Confirm password</label>
             </div>
-            <button type="submit">Register</button>
+            <div class="field field-checkbox" :class="getClass('accept')">
+                <input type="checkbox" v-model="accept.value" id="firstborn" name="accept">
+                <label for="firstborn">I confirm that I will sacrifice my firstborn son in order to get access to some random demo.</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </section>
 </template>
@@ -35,60 +45,106 @@
         name: 'LoginForm', 
         data () {
             return {
-                errors: [],
-                firstname: '',
-                lastname: '',
-                email: '',
-                password: '',
-                confirmPassword: '',
+                alerts: [],
+                invalidFields: [],
+                firstname: { value: '', valid: true },
+                lastname: { value: '', valid: true },
+                email: { value: '', valid: true },
+                password: { value: '', valid: true },
+                confirmPassword: { value: '', valid: true },
+                accept: { value: false, valid: true },
                 // submitted: false,
             }
         },
         methods: {
-            submit(e) {
+            submit() {
 
                 // Reset
 
-                this.errors = []
+                this.alerts = []
                 
                 const { firstname, lastname, email, password, confirmPassword } = this
-                // const fields = ['firstname', 'lastname', 'email', 'password', 'confirmPassword']
+                const fields = ['firstname', 'lastname', 'email', 'password', 'confirmPassword']
 
                 // Setup lookup table to match error messages with fields,
                 // loop said lookup table and push error messages if field is empty.
-                // Finally, skip all remaining code if there are errors.
 
-                const requiredMessages = {
-                    firstname: 'Please enter your first name.',
-                    lastname: 'Please enter your last name.',
-                    email: 'Please enter your email address.',
-                    password: 'Please enter a password.',
-                    confirmPassword: 'Please confirm the given password.',
+                // const requiredMessages = {
+                //     firstname: 'Please enter your first name.',
+                //     lastname: 'Please enter your last name.',
+                //     email: 'Please enter your email address.',
+                //     password: 'Please enter a password.',
+                //     confirmPassword: 'Please confirm the given password.',
+                //     accept: 'We really need that firstborn son... We are progressing by leaps and bounds and are always ahead of other services. So, unlike other services, your personal information and privacy alone do not suffice.',
+                // }
+
+                // Object.keys(requiredMessages).forEach((key) => !this[key] && this.errors.push({ field: key, message: requiredMessages[key] }))
+
+                // Too many messages in the above solution, we will group 
+                // all required fields into one message
+
+                for (let field of fields) {
+
+                    if (this[field].value) {
+                        this[field].valid = true
+                        continue
+                    }
+
+                    this[field].valid = false
+
+                    let hasRequiredError = this.alerts.find((alert) => alert.id === 'required')
+                    if (!hasRequiredError) this.alerts.push({ id: 'required', type: 'error', message: 'All fields are required.' })
+
                 }
 
-                Object.keys(requiredMessages).forEach((key) => !this[key] && this.errors.push(requiredMessages[key]))
-
-                if (this.errors.length > 0) return
+                if (this.alerts.length > 0) return
 
                 // Make sure passwords match, make sure email hasn't been used yet
                 // and check email address with a regex. Finally, skip remaining
                 // code if errors are present.
 
-                if (password !== confirmPassword) this.errors.push('Please make sure your passwords match.')
+                if (password.value !== confirmPassword.value) {
+                    this.alerts.push({ type: 'error', message: 'Please make sure your passwords match.' })
+                    this.password.valid = false
+                    this.confirmPassword.valid = false
+                }
 
-                let exists = window.USERS.find((user) => user.email == email)
-                if (exists) this.errors.push('That email address has already been taken.')
+                let isValidEmail = this.validate('email', email.value)
+                if (!isValidEmail) {
+                    this.alerts.push({ type: 'error', message: 'Please enter a valid email address.' })
+                    this.email.valid = false
+                    return
+                }
 
-                let isValidEmail = this.validate('email', email)
-                if (!isValidEmail) this.errors.push('Please enter a valid email address.')
+                let exists = window.USERS.find((user) => user.email == email.value)
+                if (exists) {
+                    this.alerts.push({ type: 'error', message: 'That email address has already been taken.' })
+                    this.email.valid = false
+                }
 
-                if (this.errors.length > 0) return
+                // Confirm terms of service
+
+                if (!this.accept.value) {
+
+                    this.accept.valid = false
+                    this.alerts.push({ type: 'error', message: 'We really need that firstborn son... We are progressing by leaps and bounds and are always ahead of other services. So, unlike other services, your personal information and privacy alone do not suffice.' })
+
+                } else {
+                    
+                    // Manually set valid state as this field isn't included in the fields variable
+
+                    this.accept.valid = true
+
+                }
+
+                if (this.alerts.length > 0) return
 
                 // Add user and emit to parent
 
-                window.USERS.push({ firstname, lastname, email, password })
+                const user = { firstname: firstname.value, lastname: lastname.value, email: email.value, password: password.value }
+                window.USERS.push(user)
 
-                this.$emit('success', e)
+                this.$emit('success', user)
             },
 
             validate(type, value) {
@@ -105,11 +161,12 @@
 
             },
 
-            getClass(prop) {
+            getClass(field) {
 
                 let classlist = []
 
-                if (!this[prop]) classlist.push('empty')
+                if (!this[field].value) classlist.push('empty')
+                if (!this[field].valid) classlist.push('invalid')
 
                 return classlist.join(' ')
 

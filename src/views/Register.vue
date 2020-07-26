@@ -3,13 +3,20 @@
         <div class="card card-small">
             <div class="card--main">
                 <h2>Register</h2>
-                <RegisterForm @success="success" />
+                <RegisterForm @success="success" v-if="!done" />
+                <p v-if="done">
+                    Thanks. We will send a carrier to collect your debt.
+                </p>
+                <router-link to="/login" v-if="done">
+                    <svg><use xlink:href="#icon-arrow--left" /></svg>
+                    <span>Back to login</span>
+                </router-link>
             </div>
             <div class="card--alt">
 
                 <h2 v-if="!done">Already have an account?</h2>
                 <p v-if="!done">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dapibus est vitae tellus semper, vitae laoreet lacus bibendum. Suspendisse mollis pellentesque mi eget interdum. Mauris tempus nibh et tellus posuere, viverra lacinia nunc molestie.
+                    Mauris turpis odio, tristique nec scelerisque vitae, gravida in dolor. Nunc dictum nunc ut venenatis malesuada. Aenean fermentum tincidunt risus, at tincidunt massa vehicula non. Proin ultricies nibh eget dui volutpat, vel suscipit purus imperdiet. Fusce ornare dui sed sapien vulputate vehicula. Vivamus nec sagittis nisl. Cras nec risus condimentum, varius nunc in, posuere odio. Suspendisse nibh lorem, varius ac ligula at, rutrum rutrum massa.
                 </p>
 
                 <h2 v-if="done">Registration complete</h2>
@@ -17,7 +24,10 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dapibus est vitae tellus semper, vitae laoreet lacus bibendum. Suspendisse mollis pellentesque mi eget interdum. Mauris tempus nibh et tellus posuere, viverra lacinia nunc molestie.
                 </p>
 
-                <router-link to="/login">Back to login</router-link>
+                <router-link to="/login">
+                    <svg><use xlink:href="#icon-arrow--left" /></svg>
+                    <span>Back to login</span>
+                </router-link>
             </div>
         </div>
         

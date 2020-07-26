@@ -7,7 +7,7 @@
 <style scoped>
 	h1 {
 		font-size: 5rem;
-		background: linear-gradient(45deg, var(--color-primary) 0%, #ddd 50%, var(--color-secondary) 100%);
+		background: var(--gradient-primary);
 		background-size: cover;
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;

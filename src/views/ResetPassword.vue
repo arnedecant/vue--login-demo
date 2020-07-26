@@ -10,7 +10,10 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dapibus est vitae tellus semper, vitae laoreet lacus bibendum. Suspendisse mollis pellentesque mi eget interdum. Mauris tempus nibh et tellus posuere, viverra lacinia nunc molestie.
                 </p>
-                <router-link to="/login" class="btn btn-primary">No, nevermind!</router-link>
+                <router-link to="/login">
+                    <svg><use xlink:href="#icon-arrow--left" /></svg>
+                    <span>No, nevermind!</span>
+                </router-link>
             </div>
         </div>
     </section>
