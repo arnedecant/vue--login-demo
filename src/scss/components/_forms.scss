@@ -2,6 +2,12 @@ input, textarea {
     all: unset;
 }
 
+label {
+    // it's a nuisance when clicking the label to check a checkbox
+    // or focus on an input field, so we disable it altogether
+    user-select: none; 
+}
+
 .field {
     --height: 2rem;
     --border-width: 3px;
@@ -61,11 +67,18 @@ input, textarea {
     transition: .2s;
     transition-property: opacity, transform;
     pointer-events: none; // usually bad UX, but because labels are on top of input fields this is a must
-    user-select: none; // no need to select labels + a nuisance when clicking the label to check a checkbox
 }
 
 .field-text input:focus + label, 
-.field-text:not(.empty) input + label,
+.field-text:not(.empty) input + label {
+    transform: translateY(-70%) scale(0.7);
+    opacity: 1;
+    pointer-events: all;
+}
+
+// Need to split these because if we don't, the above
+// won't work on Firefox
+
 .field-text input:-webkit-autofill + label {
     transform: translateY(-70%) scale(0.7);
     opacity: 1;
