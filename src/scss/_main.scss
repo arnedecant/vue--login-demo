@@ -1,7 +1,7 @@
 @import '_variables';
 
 :root {
-    font-family: 'Poppins', Avenir, Helvetica, Arial, sans-serif;
+    font-family: 'Poppins', Avenir, Helvetica, Arial, sans-serif; // for IE
     font-family: var(--font-primary);
     font-weight: 300;
     font-size: 1rem;
