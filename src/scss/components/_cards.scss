@@ -75,3 +75,18 @@
     }
 
 }
+
+// Fix Internet Explorer
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+
+    .card--main {
+        background-color: white;
+    }
+    
+    .card--alt {
+        background-color: rgba(0, 0, 0, 0.75);
+        color: white;
+    }
+
+}
