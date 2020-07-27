@@ -70,6 +70,7 @@
 
                 // Setup lookup table to match error messages with fields,
                 // loop said lookup table and push error messages if field is empty.
+                // NOTE: removed because of too many alerts
 
                 // const requiredMessages = {
                 //     firstname: 'Please enter your first name.',
