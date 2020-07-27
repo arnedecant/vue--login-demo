@@ -72,16 +72,6 @@
                 }
 
             },
-
-            getClass(prop) {
-
-                let classlist = []
-
-                if (!this[prop]) classlist.push('empty')
-
-                return classlist.join(' ')
-
-            },
             
             change(field, value) {
 
