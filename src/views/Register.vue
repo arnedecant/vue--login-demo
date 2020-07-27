@@ -6,7 +6,7 @@
                 <RegisterForm @success="success" v-if="!done" />
                 <transition name="fade">
                     <div v-if="done">
-                        <p>
+                        <p class="alert alert-success">
                             Well done! We will send a carrier to collect the body when the time comes.
                         </p>
                         <router-link to="/login">
