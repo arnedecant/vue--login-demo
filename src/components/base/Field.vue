@@ -60,7 +60,8 @@
 
             input() {
 
-                this.$emit('input', this.$refs.field.value)
+                if (this.type === 'checkbox') this.$emit('input', this.$refs.field.checked)
+                else this.$emit('input', this.$refs.field.value)
 
             }
         } 
