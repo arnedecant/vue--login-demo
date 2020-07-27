@@ -12,7 +12,7 @@
             </ul>
         </transition>
         <form @submit.prevent="submit">
-            <Field type="email" id="email" label="Email" :valid="email.valid" :value="email.value" @change="change" />
+            <Field type="email" id="email" label="Email" :valid="email.valid" v-model="email.value" @change="change" />
             <button type="submit" class="btn btn-primary">Send reset link</button>
         </form>
     </section>
@@ -22,7 +22,8 @@
     import Field from '@/components/base/Field.vue'
 
     export default { 
-        name: 'ResetPasswordForm', 
+        name: 'ResetPasswordForm',
+        components: { Field },
         data () {
             return {
                 alerts: [],
@@ -45,15 +46,8 @@
                 
                 this.$emit('success', e)
 
-            },
-            
-            change(field, value) {
-
-                this[field].value = value
-
             }
-        },
-        components: { Field }
+        }
     }
 
 </script>

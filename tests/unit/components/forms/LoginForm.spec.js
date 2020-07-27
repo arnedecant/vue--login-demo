@@ -7,6 +7,4 @@ describe('LoginForm.vue', () => {
         expect(typeof LoginForm.methods.submit).toBe('function')
     })
 
-    
-
 })

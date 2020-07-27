@@ -6,7 +6,22 @@
 
 <template>
     <div :class="getClass()">
-        <input :type="type" :id="id" :name="id" v-model="value" @change="change()">
+        <input 
+            v-if="typeof value === 'String'" 
+            ref="field" 
+            :type="type" 
+            :id="id" 
+            :name="id" 
+            :value="value" 
+            @input="input()">
+        <input 
+            v-else 
+            ref="field" 
+            :type="type" 
+            :id="id" 
+            :name="id" 
+            :checked="value" 
+            @input="input()">
         <label :for="id">{{ label }}</label>
     </div>
 </template>
@@ -19,11 +34,12 @@
             type: String,
             id: String,
             label: String,
+            value: [String, Boolean],
             valid: Boolean
         },
         data () {
             return {
-                value: null
+                defaults: ['text', 'password', 'email', 'textarea']
             }
         },
         methods: {
@@ -32,8 +48,7 @@
 
                 let classlist = ['field']
 
-                const defaults = ['text', 'password', 'email', 'textarea']
-                if (defaults.includes(this.type)) classlist.push('field-text')
+                if (this.defaults.includes(this.type)) classlist.push('field-text')
                 else classlist.push(`field-${ this.type }`)
 
                 if (!this.value) classlist.push('empty')
@@ -43,9 +58,9 @@
 
             },
 
-            change() {
+            input() {
 
-                this.$emit('change', this.id, this.value)
+                this.$emit('input', this.$refs.field.value)
 
             }
         } 

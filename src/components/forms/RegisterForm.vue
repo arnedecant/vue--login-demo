@@ -16,23 +16,23 @@
         <form @submit.prevent="submit" novalidate autocomplete="off">
             <Field 
                 type="text" id="firstname" label="First name" 
-                :valid="firstname.valid" :value="firstname.value" @change="change" />
+                :valid="firstname.valid" v-model="firstname.value" />
             <Field 
                 type="text" id="lastname" label="Last name" 
-                :valid="lastname.valid" :value="lastname.value" @change="change" />
+                :valid="lastname.valid" v-model="lastname.value" />
             <Field 
                 type="email" id="email" label="Email" 
-                :valid="email.valid" :value="email.value" @change="change" />
+                :valid="email.valid" v-model="email.value" />
             <Field 
                 type="password" id="password" label="Password" 
-                :valid="password.valid" :value="password.value" @change="change" />
+                :valid="password.valid" v-model="password.value" />
             <Field 
                 type="password" id="confirmPassword" label="Confirm password" 
-                :valid="confirmPassword.valid" :value="confirmPassword.value" @change="change" />
+                :valid="confirmPassword.valid" v-model="confirmPassword.value" />
             <Field 
                 type="checkbox"  id="accept" 
                 label="I confirm that I will sacrifice my firstborn son in order to get access to some random demo." 
-                :valid="accept.valid" :value="accept.value" @change="change" />
+                :valid="accept.valid" v-model="accept.value" />
 
             <button type="submit" class="btn btn-primary">Register</button>
         </form>

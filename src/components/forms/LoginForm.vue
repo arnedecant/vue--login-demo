@@ -16,10 +16,10 @@
         <form @submit.prevent="submit" novalidate>
             <Field 
                 type="email" id="email" label="Email" 
-                :valid="email.valid" :value="email.value" @change="change" />
+                :valid="email.valid" v-model="email.value" />
             <Field 
                 type="password" id="password" label="Password" 
-                :valid="password.valid" :value="password.value" @change="change" />
+                :valid="password.valid" v-model="password.value" />
             <router-link to="/reset-password" class="input-helper">Forgot password?</router-link>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
@@ -45,7 +45,8 @@
     */
 
     export default { 
-        name: 'LoginForm', 
+        name: 'LoginForm',
+        components: { Field },
         data () {
             return {
                 alerts: [],
@@ -71,15 +72,8 @@
                     this.alerts.push({ message: 'Invalid email and/or password.' })
                 }
 
-            },
-            
-            change(field, value) {
-
-                this[field].value = value
-
             }
-        },
-        components: { Field }
+        }
     }
 
 </script>
