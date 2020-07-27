@@ -8,25 +8,27 @@
 
 <template>
     <section class="form">
-        <ul v-if="errors.length" class="alerts">
-            <li v-for="error in errors" :key="error.message" class="alert alert-error">{{ error.message }}</li>
-        </ul>
+        <transition name="fade">
+            <ul v-if="alerts.length" class="alerts">
+                <li v-for="alert in alerts" :key="alert.message" class="alert alert-error">{{ alert.message }}</li>
+            </ul>
+        </transition>
         <form @submit.prevent="submit" novalidate>
-            <div class="field field-text" :class="getClass('email')">
-                <input type="email" v-model="email" id="email" name="email">
-                <label for="email">Email</label>
-            </div>
-            <div class="field field-text" :class="getClass('password')">
-                <input type="password" v-model="password" id="password" name="password">
-                <label for="password">Password</label>
-                <router-link to="/reset-password" class="input-helper">Forgot password?</router-link>
-            </div>
+            <Field 
+                type="email" id="email" label="Email" 
+                :valid="email.valid" :value="email.value" @change="change" />
+            <Field 
+                type="password" id="password" label="Password" 
+                :valid="password.valid" :value="password.value" @change="change" />
+            <router-link to="/reset-password" class="input-helper">Forgot password?</router-link>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
     </section>
 </template>
 
 <script>
+
+    import Field from '@/components/base/Field.vue'
 
     // NOTE: ES6 arrow functions don't work with event-bubbling
     // because of a difference in scoping. Calling this.$emit():
@@ -46,9 +48,9 @@
         name: 'LoginForm', 
         data () {
             return {
-                errors: [],
-                email: '',
-                password: '',
+                alerts: [],
+                email: { value: '', valid: true },
+                password: { value: '', valid: true },
                 submitted: false
             }
         },
@@ -56,17 +58,17 @@
             submit(e) {
 
                 this.$emit('submit', e)
-                this.errors = []
+                this.alerts = []
                 
                 const { email, password } = this
 
-                window.USER = window.USERS.find((user) => user.email === email && user.password === password)
+                window.USER = window.USERS.find((user) => user.email === email.value && user.password === password.value)
 
                 if (window.USER) {
                     this.$emit('success', e)
                 } else {
                     this.$emit('error', e)
-                    this.errors.push({ message: 'Invalid email and/or password.' })
+                    this.alerts.push({ message: 'Invalid email and/or password.' })
                 }
 
             },
@@ -79,8 +81,15 @@
 
                 return classlist.join(' ')
 
+            },
+            
+            change(field, value) {
+
+                this[field].value = value
+
             }
-        } 
+        },
+        components: { Field }
     }
 
 </script>

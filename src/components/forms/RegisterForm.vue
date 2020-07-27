@@ -6,40 +6,42 @@
 
 <template>
     <section class="form">
-        <ul v-if="alerts.length" class="alerts">
-            <li v-for="alert in alerts" :key="alert.message" class="alert" :class="'alert-' + alert.type">{{ alert.message }}</li>
-        </ul>
+        <transition name="fade">
+            <ul v-if="alerts.length" class="alerts">
+                <!-- <transition-group name="fade"> -->
+                <li v-for="alert in alerts" :key="alert.message" class="alert alert-error">{{ alert.message }}</li>
+                <!-- </transition-group> -->
+            </ul>
+        </transition>
         <form @submit.prevent="submit" novalidate autocomplete="off">
-            <div class="field field-text" :class="getClass('firstname')">
-                <input type="text" v-model="firstname.value" id="firstname" name="firstname">
-                <label for="firstname">First name</label>
-            </div>
-            <div class="field field-text" :class="getClass('lastname')">
-                <input type="text" v-model="lastname.value" id="lastname" name="lastname">
-                <label for="lastname">Last name</label>
-            </div>
-            <div class="field field-text" :class="getClass('email')">
-                <input type="email" v-model="email.value" id="email" name="email">
-                <label for="email">Email</label>
-            </div>
-            <div class="field field-text" :class="getClass('password')">
-                <input type="password" v-model="password.value" id="password" name="password">
-                <label for="password">Password</label>
-            </div>
-            <div class="field field-text" :class="getClass('confirmPassword')">
-                <input type="password" v-model="confirmPassword.value" id="confirmPassword" name="confirmPassword">
-                <label for="confirmPassword">Confirm password</label>
-            </div>
-            <div class="field field-checkbox" :class="getClass('accept')">
-                <input type="checkbox" v-model="accept.value" id="firstborn" name="accept">
-                <label for="firstborn">I confirm that I will sacrifice my firstborn son in order to get access to some random demo.</label>
-            </div>
+            <Field 
+                type="text" id="firstname" label="First name" 
+                :valid="firstname.valid" :value="firstname.value" @change="change" />
+            <Field 
+                type="text" id="lastname" label="Last name" 
+                :valid="lastname.valid" :value="lastname.value" @change="change" />
+            <Field 
+                type="email" id="email" label="Email" 
+                :valid="email.valid" :value="email.value" @change="change" />
+            <Field 
+                type="password" id="password" label="Password" 
+                :valid="password.valid" :value="password.value" @change="change" />
+            <Field 
+                type="password" id="confirmPassword" label="Confirm password" 
+                :valid="confirmPassword.valid" :value="confirmPassword.value" @change="change" />
+            <Field 
+                type="checkbox"  id="accept" 
+                label="I confirm that I will sacrifice my firstborn son in order to get access to some random demo." 
+                :valid="accept.valid" :value="accept.value" @change="change" />
+
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </section>
 </template>
 
 <script>
+
+    import Field from '@/components/base/Field.vue'
 
     export default { 
         name: 'LoginForm', 
@@ -97,6 +99,21 @@
 
                 }
 
+                // Confirm terms of service
+
+                if (!this.accept.value) {
+
+                    this.accept.valid = false
+                    this.alerts.push({ type: 'error', message: 'We really need that firstborn son... We are progressing by leaps and bounds and are always ahead of other services. So, unlike other services, your personal information and privacy alone do not suffice.' })
+
+                } else {
+                    
+                    // Manually set valid state as this field isn't included in the fields variable
+
+                    this.accept.valid = true
+
+                }
+
                 if (this.alerts.length > 0) return
 
                 // Make sure passwords match, make sure email hasn't been used yet
@@ -120,21 +137,6 @@
                 if (exists) {
                     this.alerts.push({ type: 'error', message: 'That email address has already been taken.' })
                     this.email.valid = false
-                }
-
-                // Confirm terms of service
-
-                if (!this.accept.value) {
-
-                    this.accept.valid = false
-                    this.alerts.push({ type: 'error', message: 'We really need that firstborn son... We are progressing by leaps and bounds and are always ahead of other services. So, unlike other services, your personal information and privacy alone do not suffice.' })
-
-                } else {
-                    
-                    // Manually set valid state as this field isn't included in the fields variable
-
-                    this.accept.valid = true
-
                 }
 
                 if (this.alerts.length > 0) return
@@ -161,17 +163,24 @@
 
             },
 
-            getClass(field) {
+            // getClass(field) {
 
-                let classlist = []
+            //     let classlist = []
 
-                if (!this[field].value) classlist.push('empty')
-                if (!this[field].valid) classlist.push('invalid')
+            //     if (!this[field].value) classlist.push('empty')
+            //     if (!this[field].valid) classlist.push('invalid')
 
-                return classlist.join(' ')
+            //     return classlist.join(' ')
+
+            // },
+            
+            change(field, value) {
+
+                this[field].value = value
 
             }
-        } 
+        },
+        components: { Field }
     }
 
 </script>

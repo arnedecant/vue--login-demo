@@ -16,6 +16,10 @@
     }
 }
 
+@keyframes fade {
+
+}
+
 
 .slide-down-enter-active,
 .slide-down-leave-active {
@@ -30,4 +34,12 @@
 
 .animation-shake {
     animation: shake 1s ease;
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to {
+    opacity: 0;
 }

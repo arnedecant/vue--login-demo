@@ -61,6 +61,7 @@ input, textarea {
     transition: .2s;
     transition-property: opacity, transform;
     pointer-events: none; // usually bad UX, but because labels are on top of input fields this is a must
+    user-select: none; // no need to select labels + a nuisance when clicking the label to check a checkbox
 }
 
 .field-text input:focus + label, 
@@ -101,11 +102,19 @@ form .btn-primary:last-child {
         height: 0.8rem;
         margin-right: 0.5rem;
         border: 2px solid var(--color-primary);
-        transition: background .3s, border .3s;
+        outline: 2px solid transparent;
+        transition: background .3s, border .3s, outline .3s;
+
+        &:checked, &:focus {
+            border-color: var(--color-primary--light);
+        }
 
         &:checked {
-            border-color: var(--color-primary--light);
             background-color: var(--color-primary);
+        }
+
+        &:focus {
+            outline-color: var(--color-primary--light);
         }
     }
 

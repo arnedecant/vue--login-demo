@@ -135,10 +135,19 @@ a, .link {
 	color: var(--color-primary);
 	background-color: transparent;
 	box-shadow: var(--shadow-small);
+	// border: 2px solid var(--color-default);	
 
 	// readability++ when text (--color-primary) gets on top of --color-primary in the background gradient
 	// background: var(--color-primary); // testing readability ...
 	text-shadow: var(--color-default) 1px 1px 5px, var(--color-default) -1px -1px 5px;
+
+	&:focus, &:hover {
+		box-shadow: var(--shadow-medium);
+	}
+
+	&:active {
+		box-shadow: var(--shadow-small);
+	}
 
 	&:after {
 		content: '';

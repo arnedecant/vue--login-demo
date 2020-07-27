@@ -3,7 +3,18 @@
         <div class="card card-small">
             <div class="card--main">
                 <h2>Reset password</h2>
-                <ResetPasswordForm @success="success" />
+                <ResetPasswordForm @success="success = true" v-if="!success" />
+                <transition name="fade">
+                    <div v-if="success">
+                        <p class="alert alert-success">
+                            An email has been sent to the provided address.
+                        </p>
+                        <router-link to="/login">
+                            <svg><use xlink:href="#icon-arrow--left" /></svg>
+                            <span>Back to login</span>
+                        </router-link>
+                    </div>
+                </transition>
             </div>
             <div class="card--alt">
                 <h2>Lost your password?</h2>
@@ -25,8 +36,13 @@ import ResetPasswordForm from '@/components/forms/ResetPasswordForm.vue'
 
 export default {
     name: 'ResetPassword',
+    data () {
+        return {
+            success: false
+        }
+    },
     methods: {
-        success: () => console.log('[ResetPasswordView]: succes!')
+        // success: () => console.log('[ResetPasswordView]: succes!')
     },
 	components: { ResetPasswordForm }
 }

@@ -49,3 +49,29 @@
         border-bottom-right-radius: var(--border-radius);
     }
 }
+
+@media (max-width: $bp-small) {
+
+    .card {
+        flex-direction: column;
+    }
+
+    .card--main, .card--alt {
+        width: 100%;
+        max-width: 20rem;
+    }
+
+    .card--main {
+        margin: 0;
+        order: 0;
+    }
+
+    .card--alt {
+        order: 1;
+    }
+
+    .card--alt:after {
+        display: none
+    }
+
+}

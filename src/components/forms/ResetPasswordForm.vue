@@ -5,32 +5,55 @@
 //  - success: event
 
 <template>
-    <form @submit.prevent="submit">
-        <div class="field">
-            <input type="email" v-model="email" id="email" name="email" placeholder="Email">
-            <label for="email">Email</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Send reset link</button>
-    </form>
+    <section class="form">
+        <transition name="fade">
+            <ul v-if="alerts.length" class="alerts">
+                <li v-for="alert in alerts" :key="alert.message" class="alert alert-error">{{ alert.message }}</li>
+            </ul>
+        </transition>
+        <form @submit.prevent="submit">
+            <Field type="email" id="email" label="Email" :valid="email.valid" :value="email.value" @change="change" />
+            <button type="submit" class="btn btn-primary">Send reset link</button>
+        </form>
+    </section>
 </template>
 <script>
+
+    import Field from '@/components/base/Field.vue'
 
     export default { 
         name: 'ResetPasswordForm', 
         data () {
             return {
-                email: 'hello@arnedecant.be'
+                alerts: [],
+                email: { value: '', valid: true }
             }
         },
         methods: {
             submit(e) {
 
+                this.alerts = []
+                this.email.valid = true
+
+                if (!this.email.value) {
+                    this.email.valid = false
+                    this.alerts.push({ message: 'Please fill in your email address.' })
+                    return
+                }
+
                 // Send mail ...
                 
                 this.$emit('success', e)
 
+            },
+            
+            change(field, value) {
+
+                this[field].value = value
+
             }
-        } 
+        },
+        components: { Field }
     }
 
 </script>

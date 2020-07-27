@@ -4,13 +4,17 @@
             <div class="card--main">
                 <h2>Register</h2>
                 <RegisterForm @success="success" v-if="!done" />
-                <p v-if="done">
-                    Thanks. We will send a carrier to collect your debt.
-                </p>
-                <router-link to="/login" v-if="done">
-                    <svg><use xlink:href="#icon-arrow--left" /></svg>
-                    <span>Back to login</span>
-                </router-link>
+                <transition name="fade">
+                    <div v-if="done">
+                        <p>
+                            Well done! We will send a carrier to collect the body when the time comes.
+                        </p>
+                        <router-link to="/login">
+                            <svg><use xlink:href="#icon-arrow--left" /></svg>
+                            <span>Back to login</span>
+                        </router-link>
+                    </div>
+                </transition>
             </div>
             <div class="card--alt">
 
@@ -28,6 +32,7 @@
                     <svg><use xlink:href="#icon-arrow--left" /></svg>
                     <span>Back to login</span>
                 </router-link>
+                
             </div>
         </div>
         
